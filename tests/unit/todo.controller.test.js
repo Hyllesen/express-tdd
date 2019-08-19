@@ -21,7 +21,7 @@ describe("TodoController.createTodo", () => {
     TodoController.createTodo(req, res, next);
     expect(TodoModel.create).toBeCalledWith(newTodo);
   });
-  it("should get 201 HTTP response code", () => {
+  it("should return 201 response code", () => {
     req.body = newTodo;
     TodoController.createTodo(req, res, next);
     expect(res.statusCode).toBe(201);
