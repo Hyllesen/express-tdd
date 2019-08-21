@@ -15,6 +15,7 @@
     "node-mocks-http": "^1.7.6"
   },
   "devDependencies": {
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
   }
 }
