@@ -8,3 +8,8 @@ exports.createTodo = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getTodos = async (req, res, next) => {
+  const allTodos = await TodoModel.find({});
+  res.status(200).json(allTodos);
+};
