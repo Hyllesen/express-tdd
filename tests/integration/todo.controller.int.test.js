@@ -22,6 +22,12 @@ describe(endpointUrl, () => {
     expect(response.body.title).toBe(firstTodo.title);
     expect(response.body.done).toBe(firstTodo.done);
   });
+  test("GET todoby id doesn't exist" + endpointUrl + ":todoId", async () => {
+    const response = await request(app).get(
+      endpointUrl + "5d5fff416bef3c07ecf11f77"
+    );
+    expect(response.statusCode).toBe(404);
+  });
   it("POST " + endpointUrl, async () => {
     const response = await request(app)
       .post(endpointUrl)
