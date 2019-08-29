@@ -21,6 +21,16 @@ describe("TodoController.updateTodo", () => {
   it("should have a updateTodo function", () => {
     expect(typeof TodoController.updateTodo).toBe("function");
   });
+  it("should update with TodoModel.findByIdAndUpdate", async () => {
+    req.params.todoId = todoId;
+    req.body = newTodo;
+    await TodoController.updateTodo(req, res, next);
+
+    expect(TodoModel.findByIdAndUpdate).toHaveBeenCalledWith(todoId, newTodo, {
+      new: true,
+      useFindAndModify: false
+    });
+  });
 });
 
 describe("TodoController.getTodoById", () => {
