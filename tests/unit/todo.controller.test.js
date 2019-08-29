@@ -24,11 +24,19 @@ describe("TodoController.getTodoById", () => {
     await TodoController.getTodoById(req, res, next);
     expect(TodoModel.findById).toBeCalledWith("5d5ecb5a6e598605f06cb945");
   });
-  it("should return a todomodel", async () => {
+  it("should return json body and response code 200", async () => {
     TodoModel.findById.mockReturnValue(newTodo);
     await TodoController.getTodoById(req, res, next);
-    expect(res._getJSONData()).toStrictEqual(newTodo);
     expect(res.statusCode).toBe(200);
+    expect(res._getJSONData()).toStrictEqual(newTodo);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+  it("should do error handling", async () => {
+    const errorMessage = { message: "error finding todoModel" };
+    const rejectedPromise = Promise.reject(errorMessage);
+    TodoModel.findById.mockReturnValue(rejectedPromise);
+    await TodoController.getTodoById(req, res, next);
+    expect(next).toHaveBeenCalledWith(errorMessage);
   });
 });
 
