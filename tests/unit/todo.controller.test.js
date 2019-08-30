@@ -31,6 +31,15 @@ describe("TodoController.updateTodo", () => {
       useFindAndModify: false
     });
   });
+  it("should return a response with json data and http code 200", async () => {
+    req.params.todoId = todoId;
+    req.body = newTodo;
+    TodoModel.findByIdAndUpdate.mockReturnValue(newTodo);
+    await TodoController.updateTodo(req, res, next);
+    expect(res._isEndCalled()).toBeTruthy();
+    expect(res.statusCode).toBe(200);
+    expect(res._getJSONData()).toStrictEqual(newTodo);
+  });
 });
 
 describe("TodoController.getTodoById", () => {
