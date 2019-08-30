@@ -72,6 +72,12 @@ describe("TodoController.getTodoById", () => {
     await TodoController.getTodoById(req, res, next);
     expect(next).toHaveBeenCalledWith(errorMessage);
   });
+  it("should handle 404", async () => {
+    TodoModel.findByIdAndUpdate.mockReturnValue(null);
+    await TodoController.updateTodo(req, res, next);
+    expect(res.statusCode).toBe(404);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
 });
 
 describe("TodoController.getTodos", () => {
