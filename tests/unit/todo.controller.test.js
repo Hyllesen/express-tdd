@@ -40,6 +40,13 @@ describe("TodoController.updateTodo", () => {
     expect(res.statusCode).toBe(200);
     expect(res._getJSONData()).toStrictEqual(newTodo);
   });
+  it("should handle errors", async () => {
+    const errorMessage = { message: "Error" };
+    const rejectedPromise = Promise.reject(errorMessage);
+    TodoModel.findByIdAndUpdate.mockReturnValue(rejectedPromise);
+    await TodoController.updateTodo(req, res, next);
+    expect(next).toHaveBeenCalledWith(errorMessage);
+  });
 });
 
 describe("TodoController.getTodoById", () => {
