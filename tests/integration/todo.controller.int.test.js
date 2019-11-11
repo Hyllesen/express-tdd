@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("../../app");
 const newTodo = require("../mock-data/new-todo.json");
+const mockMongoDb = require("../../mongodb/mongodb.mock.connect");
 
 const endpointUrl = "/todos/";
 
@@ -9,6 +10,20 @@ const nonExistingTodoId = "5d5fff416bef3c07ecf11f77";
 const testData = { title: "Make integration test for PUT", done: true };
 
 describe(endpointUrl, () => {
+  beforeAll(async () => {
+    await mockMongoDb.connect();
+  });
+
+  it("POST " + endpointUrl, async () => {
+    const response = await request(app)
+      .post(endpointUrl)
+      .send(newTodo);
+    expect(response.statusCode).toBe(201);
+    expect(response.body.title).toBe(newTodo.title);
+    expect(response.body.done).toBe(newTodo.done);
+    newTodoId = response.body._id;
+  });
+
   test("GET " + endpointUrl, async () => {
     const response = await request(app).get(endpointUrl);
 
@@ -27,15 +42,6 @@ describe(endpointUrl, () => {
   test("GET todoby id doesn't exist" + endpointUrl + ":todoId", async () => {
     const response = await request(app).get(endpointUrl + nonExistingTodoId);
     expect(response.statusCode).toBe(404);
-  });
-  it("POST " + endpointUrl, async () => {
-    const response = await request(app)
-      .post(endpointUrl)
-      .send(newTodo);
-    expect(response.statusCode).toBe(201);
-    expect(response.body.title).toBe(newTodo.title);
-    expect(response.body.done).toBe(newTodo.done);
-    newTodoId = response.body._id;
   });
   it(
     "should return error 500 on malformed data with POST" + endpointUrl,
