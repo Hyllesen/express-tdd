@@ -36,7 +36,7 @@ describe("TodoController.getTodoById", () => {
     const rejectedPromise = Promise.reject(errorMessage);
     TodoModel.findById.mockReturnValue(rejectedPromise);
     await TodoController.getTodoById(req, res, next);
-    expect(next).toHaveBeenCalledWith(errorMessage);
+    expect(next).toBeCalledWith(errorMessage);
   });
 });
 
@@ -46,7 +46,7 @@ describe("TodoController.getTodos", () => {
   });
   it("should call TodoModel.find({})", async () => {
     await TodoController.getTodos(req, res, next);
-    expect(TodoModel.find).toHaveBeenCalledWith({});
+    expect(TodoModel.find).toBeCalledWith({});
   });
   it("should return response with status 200 and all todos", async () => {
     TodoModel.find.mockReturnValue(allTodos);
@@ -60,7 +60,7 @@ describe("TodoController.getTodos", () => {
     const rejectedPromise = Promise.reject(errorMessage);
     TodoModel.find.mockReturnValue(rejectedPromise);
     await TodoController.getTodos(req, res, next);
-    expect(next).toHaveBeenCalledWith(errorMessage);
+    expect(next).toBeCalledWith(errorMessage);
   });
   it("should return 404 when item doesnt exist", async () => {
     TodoModel.findById.mockReturnValue(null);
